@@ -55,14 +55,14 @@ COMMIT
 
 # Allow https and http traffic
 {% if allow_https %}
--A ODefaults -p tcp --dport 443 -j ACCEPT -m comment --comment "HTTPS Access"
+-A OUTPUT -p tcp --dport 443 -j ACCEPT -m comment --comment "HTTPS Access"
 {% endif %}
 {% if allow_https %}
--A ODefaults -p tcp --dport 80 -j ACCEPT -m comment --comment "HTTP Access"
+-A OUTPUT -p tcp --dport 80 -j ACCEPT -m comment --comment "HTTP Access"
 {% endif %}
 {% if allow_ntp %}
 # Allow NTP
--A ODefaults -p udp --dport 123 -j ACCEPT -m comment --comment "NTP Access"
+-A OUTPUT -p udp --dport 123 -j ACCEPT -m comment --comment "NTP Access"
 {% endif %}
 
 #filter_rules
