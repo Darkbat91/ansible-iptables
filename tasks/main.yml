@@ -1,0 +1,20 @@
+# Thanks for the idea from here - https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
+- name: "IPTables | Check if default file"
+  lineinfile:
+    name: /etc/sysconfig/iptables
+    line: "# sample configuration for iptables service"
+    state: absent
+  check_mode: yes
+  register: default
+
+- name: IPTables | set blueprint iptables
+  template:
+    src: etc_sysconfig_iptables.j2
+    dest: /etc/sysconfig/iptables
+    owner: root
+    group: root
+    mode: 0600
+    validate: iptables-restore --test %s
+  when: default.changed
+  become: true
+  notify: load_iptables

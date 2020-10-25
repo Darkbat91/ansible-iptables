@@ -1,0 +1,4 @@
+- name: IPTables | Handlers | load rules
+  shell: iptables-restore /etc/sysconfig/iptables
+  listen: load_iptables
+  become: true

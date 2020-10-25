@@ -1,0 +1,77 @@
+#### The mangle table
+# This table allows us to modify packet headers
+# Packets enter this table first
+#
+*mangle
+:PREROUTING ACCEPT [0:0]
+:INPUT ACCEPT [0:0]
+:FORWARD ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+#mangle_chains
+
+-A FORWARD -p tcp --dport 445 -j DROP -m comment --comment "Stop SMB from Forwarding"
+-A FORWARD -p udp -m multiport --ports 137,138 -j DROP -m comment --comment "Drop NETBIOS on UDP"
+-A FORWARD -p tcp -m multiport --ports 137,139 -j DROP -m comment --comment "Drop NETBIOS on TCP"
+
+#mangle_rules
+
+COMMIT
+
+
+#### The nat table
+# This table enables Network Address Translation
+# (This is technically a type of packet mangling)
+#
+*nat
+:PREROUTING ACCEPT [0:0]
+:POSTROUTING ACCEPT [0:0]
+:OUTPUT ACCEPT [0:0]
+#nat_chains
+
+
+
+#nat_rules
+
+COMMIT
+
+
+*filter
+# By default, drop packets that are destined for this server
+:INPUT DROP [0:0]
+# By default, drop packets that request to be forwarded by this server
+:FORWARD DROP [0:0]
+# By default, drop any packets originating from this server
+:OUTPUT DROP [0:0]
+#filter_chains
+
+-A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow established connections"
+-A INPUT -i lo -j ACCEPT -m comment --comment "Allow loopback access"
+-A INPUT -p tcp --dport 22 -j ACCEPT -m comment --comment "Allow all SSH access"
+-A INPUT -m conntrack --ctstate INVALID -j DROP -m comment --comment "No sessions should be invalid"
+
+-A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT -m comment --comment "Allow established connections"
+-A OUTPUT -o lo -j ACCEPT -m comment --comment "Allow loopback access"
+
+# Allow https and http traffic
+{% if allow_https %}
+-A ODefaults -p tcp --dport 443 -j ACCEPT -m comment --comment "HTTPS Access"
+{% endif %}
+{% if allow_https %}
+-A ODefaults -p tcp --dport 80 -j ACCEPT -m comment --comment "HTTP Access"
+{% endif %}
+{% if allow_ntp %}
+# Allow NTP
+-A ODefaults -p udp --dport 123 -j ACCEPT -m comment --comment "NTP Access"
+{% endif %}
+
+#filter_rules
+
+{% if log_drops %}
+# Log the drops
+-A INPUT -j LOG --log-prefix "iptables filter INPUT dropped: "
+-A FORWARD -j LOG --log-prefix "iptables filter FORWARD dropped: "
+-A FORWARD -j LOG --log-prefix "iptables filter OUTPUT dropped: "
+{% endif %}
+
+COMMIT

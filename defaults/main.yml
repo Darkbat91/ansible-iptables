@@ -1,0 +1,12 @@
+---
+# Log all input, output and forward chains from the filter table
+log_drops: true
+
+# Allow NTP traffic from the server
+allow_ntp: true
+
+# Allow http traffic from the server
+allow_http: true
+
+# Allow https traffic from the server
+allow_https: true
