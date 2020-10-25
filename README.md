@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Darkbat91/ansible-iptables.svg?branch=v1)](https://travis-ci.org/Darkbat91/ansible-iptables)
+
 # Iptables formater for Ansible
 Configures an easy to adjust iptables structure with comments that allow a lineinfile or block in file construct to create complex ip table rules
 
