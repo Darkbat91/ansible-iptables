@@ -18,3 +18,5 @@
   when: default.changed
   become: true
   notify: load_iptables
+  tags:
+    - skip_ansible_lint
