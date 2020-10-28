@@ -9,7 +9,7 @@ By default the rule sets a DROP for all filter chains and then allows the follow
 - port 22 for ssh access to the world!
 - Any connection that is related or established
 - all loop back entries
-- 
+-
 
 
 It then drops the following connections
@@ -26,4 +26,4 @@ for example `#filter_chains` allows you to add a new chain to the filter table a
 ## Why SSH from everywhere????
 This iptables role is configured to allow all ssh access since it is primarily used in my environment to configure cloud servers and the ssh access is controlled at the network access and firewall level that can easily be updated inside of the web portal or with terraform.
 
-Updating iptables inside of those environments is a lot harder without running odd console type commands. 
+Updating iptables inside of those environments is a lot harder without running odd console type commands.
