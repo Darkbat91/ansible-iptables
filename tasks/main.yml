@@ -1,7 +1,17 @@
 ---
 - name: IPTables | Ensure iptables is installed
   package:
-    name: "iptables"
+    pkg:
+      - iptables
+      - iptables-services
+    state: present
+    update_cache: true
+
+- name: IPTables | Disable Firewalld
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
 
 # Thanks for the idea from here - https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
 - name: "IPTables | Check if default file"
