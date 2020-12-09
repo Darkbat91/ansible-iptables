@@ -7,11 +7,17 @@
     state: present
     update_cache: true
 
+- name: IPTables | Check Firewalld
+  stat:
+    path: /usr/lib/systemd/system/firewalld.service
+  register: firewalld_status
+
 - name: IPTables | Disable Firewalld
   service:
     name: firewalld
     state: stopped
     enabled: false
+  when: firewalld_status.stat.exists
 
 # Thanks for the idea from here - https://stackoverflow.com/questions/30786263/only-check-whether-a-line-present-in-a-file-ansible
 - name: "IPTables | Check if default file"
