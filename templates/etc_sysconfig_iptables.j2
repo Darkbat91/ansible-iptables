@@ -64,7 +64,11 @@ COMMIT
 # Allow NTP
 -A OUTPUT -p udp --dport 123 -j ACCEPT -m comment --comment "NTP Access"
 {% endif %}
-
+{% if dns_servers %}
+# Allow DNS
+-A OUTPUT -p tcp -d {{ dns_servers |join(',') }} --dport 53 -j ACCEPT -m comment --comment "DNS Access - TCP"
+-A OUTPUT -p udp -d {{ dns_servers |join(',') }} --dport 53 -j ACCEPT -m comment --comment "DNS Access - UDP"
+{% endif %}
 #filter_rules
 
 {% if log_drops %}
