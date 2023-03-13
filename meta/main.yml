@@ -5,11 +5,11 @@ galaxy_info:
   author: darkbat
   description: Iptables template
   license: "license (BSD, MIT)"
-  min_ansible_version: 2.1
+  min_ansible_version: "2.1"
   platforms:
-    - name: EL
+    - name: "EL"
       versions:
-        - 7
+        - "7"
   galaxy_tags:
     - iptables
     - template
