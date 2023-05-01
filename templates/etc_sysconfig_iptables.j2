@@ -75,7 +75,7 @@ COMMIT
 # Log the drops
 -A INPUT -j LOG --log-prefix "iptables INPUT drop: "
 -A FORWARD -j LOG --log-prefix "iptables FORWARD drop: "
--A OUTPUT -j LOG --log-prefix "iptables OUTPUT dropped: "
+-A OUTPUT -j LOG --log-prefix "iptables OUTPUT drop: "
 {% endif %}
 
 COMMIT
